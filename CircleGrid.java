@@ -43,7 +43,6 @@ public class CircleGrid extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-        // Draw all filled circles first
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 int x = col * HORIZONTAL_SPACING - (row % 2) * 40;
