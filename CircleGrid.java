@@ -57,9 +57,8 @@ public class CircleGrid extends JPanel {
 
     private void addRandomPoint() {
         Random rand = new Random();
-        int x = rand.nextInt(WIDTH);
+        int x = rand.nextInt(WIDTH));
         int y = rand.nextInt(HEIGHT);
-        randomPoints.add(new Point(x, y));
 
         ArrayList<Sensor> activeSensors = new ArrayList<>();
         for (Sensor sensor : sensors) {
@@ -70,6 +69,7 @@ public class CircleGrid extends JPanel {
         }
 
         if (activeSensors.size() >= 3) {
+            randomPoints.add(new Point(x, y));
             Sensor s1 = activeSensors.get(0);
             Sensor s2 = activeSensors.get(1);
             Sensor s3 = activeSensors.get(2);
@@ -97,16 +97,22 @@ public class CircleGrid extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
+        
         for (Sensor sensor : sensors) {
-            g.setColor(sensor.activationCount > 0 ? Color.RED : new Color(173, 216, 230, 150));
+            //g.setColor(sensor.activationCount > 0 ? Color.RED : new Color(173, 216, 230, 150));
+            g.setColor(new Color(173, 216, 230, 150));
             g.fillOval(sensor.x - RADIUS, sensor.y - RADIUS, DIAMETER, DIAMETER);
             g.setColor(Color.BLUE);
             g.drawOval(sensor.x - RADIUS, sensor.y - RADIUS, DIAMETER, DIAMETER);
+            g.setColor(Color.BLACK);
+            g.fillOval(sensor.x - 3, sensor.y - 3, 6, 6);
         }
         
         g.setColor(Color.GREEN);
         for (Point p : randomPoints) {
-            g.fillOval(p.x - 3, p.y - 3, 6, 6);
+            g.setColor(new Color(255, 0, 0, 50)); 
+            g.fillOval(p.x - 8, p.y - 8, 16, 16); 
+           // g.fillOval(p.x - 3, p.y - 3, 6, 6);
         }
     }
 
