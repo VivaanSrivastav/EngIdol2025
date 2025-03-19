@@ -30,6 +30,8 @@ public class CircleGrid extends JPanel {
     private static final int HEIGHT = 560;
     private ArrayList<Point> randomPoints;
     private ArrayList<Sensor> sensors;
+    private ArrayList<Integer> riskCount = new ArrayList<>();
+    private int risk;
     
     public CircleGrid() {
         randomPoints = new ArrayList<>();
@@ -57,7 +59,7 @@ public class CircleGrid extends JPanel {
 
     private void addRandomPoint() {
         Random rand = new Random();
-        int x = rand.nextInt(WIDTH));
+        int x = rand.nextInt(WIDTH);
         int y = rand.nextInt(HEIGHT);
 
         ArrayList<Sensor> activeSensors = new ArrayList<>();
@@ -81,6 +83,32 @@ public class CircleGrid extends JPanel {
                                "sensor at (" + s3.x + ", " + s3.y + ") " +
                                "detect lightning at (" + estimatedPoint.x + ", " + estimatedPoint.y + ")");
         }
+        int humidity = rand.nextInt(41);
+        int windSpeed = 10 + rand.nextInt(31);
+        int temperature = rand.nextInt(51);
+
+        
+        if (humidity < 20) {
+            risk += 2;
+        } else if (humidity < 40) {
+            risk += 1;
+        }
+
+        if (temperature > 35) {
+            risk += 2;
+        } else if (temperature >= 25) {
+            risk += 1;
+        }
+
+        if (windSpeed > 30) {
+            risk += 2;
+        } else if (windSpeed >= 15) {
+            risk += 1;
+        }
+        riskCount.add(risk);
+        //System.out.println(risk + "\n");
+        risk = 0;
+
         repaint();
     }
 
@@ -99,7 +127,6 @@ public class CircleGrid extends JPanel {
         
         
         for (Sensor sensor : sensors) {
-            //g.setColor(sensor.activationCount > 0 ? Color.RED : new Color(173, 216, 230, 150));
             g.setColor(new Color(173, 216, 230, 150));
             g.fillOval(sensor.x - RADIUS, sensor.y - RADIUS, DIAMETER, DIAMETER);
             g.setColor(Color.BLUE);
@@ -109,8 +136,31 @@ public class CircleGrid extends JPanel {
         }
         
         g.setColor(Color.GREEN);
-        for (Point p : randomPoints) {
-            g.setColor(new Color(255, 0, 0, 50)); 
+        for(int i = 0; i < randomPoints.size(); i++){
+            Point p = randomPoints.get(i);
+            int red = 50 + (riskCount.get(i) * 35); 
+            int green = 100 - (riskCount.get(i) * 20); 
+            int blue = 100 - (riskCount.get(i) * 20); 
+
+            if(red > 255) red = 255;
+            if(red < 0) red = 0;
+            if(green > 255) green = 255;
+            if(green < 0) green = 0;
+            if(blue > 255) blue = 255;
+            if(blue < 0) blue = 0;
+            if(p.x <= 200 && p.y <= 200){
+                red = 255;
+                green = 0;
+                blue = 0;
+            } else{
+                red = 50;
+                green = 100;
+                blue = 100;
+            }
+            System.out.println(red + " " + green + " " + blue);
+
+            g.setColor(new Color(red, green, blue));
+           // g.setColor(new Color(255, 0, 0, 50)); 
             g.fillOval(p.x - 8, p.y - 8, 16, 16); 
            // g.fillOval(p.x - 3, p.y - 3, 6, 6);
         }
